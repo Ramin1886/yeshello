@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yes, Say Hello!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f3f0ec;--color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-primary:#c75b2a;--color-primary-hover:#a84520;--color-primary-highlight:#f0ddd6;
+  --color-accent:#2a7a6b;--color-accent-hover:#1d5e52;
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 60/.06);--shadow-md:0 4px 12px oklch(0.2 0.01 60/.09);
+  --transition:180ms cubic-bezier(0.16,1,0.3,1);
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+  --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --text-hero:clamp(2.75rem,.5rem + 6vw,5.5rem);
+  --font-display:'Instrument Serif',Georgia,serif;
+  --font-body:'DM Sans','Helvetica Neue',sans-serif;
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+}
+[data-theme="dark"]{
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-primary:#e8845a;--color-primary-hover:#f0a07a;--color-primary-highlight:#4a3530;
+  --color-accent:#4fa397;--color-accent-hover:#79c0b8;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.2);--shadow-md:0 4px 12px oklch(0 0 0/.35);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-primary:#e8845a;--color-primary-hover:#f0a07a;--color-primary-highlight:#4a3530;
+  --color-accent:#4fa397;--color-accent-hover:#79c0b8;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.2);--shadow-md:0 4px 12px oklch(0 0 0/.35);
+}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;scroll-padding-top:var(--space-16)}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.65}
+img,svg{display:block;max-width:100%}
+p,li{text-wrap:pretty;max-width:68ch}
+h1,h2,h3{text-wrap:balance;line-height:1.15}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+a,button,[role="button"]{transition:color var(--transition),background var(--transition),box-shadow var(--transition)}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Layout */
+.container{max-width:720px;margin-inline:auto;padding-inline:var(--space-6)}
+
+/* Header */
+header{
+  padding:var(--space-4) 0;
+  border-bottom:1px solid oklch(from var(--color-text) l c h/.08);
+  position:sticky;top:0;background:oklch(from var(--color-bg) l c h/.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  z-index:100;
+}
+.header-inner{
+  max-width:720px;margin-inline:auto;padding-inline:var(--space-6);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  display:flex;align-items:center;gap:var(--space-2);
+  font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;
+  text-decoration:none;color:var(--color-text);
+}
+.logo svg{color:var(--color-primary)}
+.theme-toggle{
+  padding:var(--space-2);border-radius:var(--radius-full);
+  color:var(--color-text-muted);
+}
+.theme-toggle:hover{background:var(--color-surface-offset);color:var(--color-text)}
+
+/* Hero */
+.hero{
+  padding:clamp(var(--space-12),8vw,var(--space-16)) 0 clamp(var(--space-8),5vw,var(--space-12));
+  text-align:left;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  font-size:var(--text-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--color-primary);margin-bottom:var(--space-4);
+}
+.hero h1{
+  font-family:var(--font-display);font-size:var(--text-hero);font-weight:400;
+  color:var(--color-text);margin-bottom:var(--space-5);
+  line-height:1.1;
+}
+.hero h1 em{font-style:italic;color:var(--color-primary)}
+.hero .lead{
+  font-size:var(--text-lg);color:var(--color-text-muted);
+  margin-bottom:0;max-width:58ch;
+}
+
+/* Chat bubbles */
+.chat-demo{
+  background:var(--color-surface);border-radius:var(--radius-xl);
+  padding:var(--space-6);margin:var(--space-10) 0;
+  border:1px solid oklch(from var(--color-text) l c h/.07);
+  box-shadow:var(--shadow-md);
+}
+.chat-demo-label{
+  font-size:var(--text-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--color-text-faint);margin-bottom:var(--space-4);
+}
+.messages{display:flex;flex-direction:column;gap:var(--space-3)}
+.msg{display:flex;flex-direction:column;gap:2px}
+.msg.them{align-items:flex-start}
+.msg.you{align-items:flex-end}
+.msg-name{font-size:var(--text-xs);color:var(--color-text-faint);padding:0 var(--space-2)}
+.bubble{
+  padding:var(--space-3) var(--space-4);border-radius:var(--radius-xl);
+  font-size:var(--text-sm);max-width:80%;line-height:1.5;
+}
+.msg.them .bubble{
+  background:var(--color-surface-2);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-bottom-left-radius:var(--radius-sm);
+}
+.msg.you .bubble{
+  background:var(--color-primary);color:#fff;
+  border-bottom-right-radius:var(--radius-sm);
+}
+.msg-time{font-size:var(--text-xs);color:var(--color-text-faint);padding:0 var(--space-2)}
+.chat-divider{
+  text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);
+  position:relative;margin:var(--space-4) 0;
+}
+.chat-divider::before,.chat-divider::after{
+  content:'';position:absolute;top:50%;width:35%;height:1px;
+  background:var(--color-divider);
+}
+.chat-divider::before{left:0}
+.chat-divider::after{right:0}
+
+/* Sections */
+.section{padding:clamp(var(--space-8),5vw,var(--space-12)) 0}
+.section + .section{border-top:1px solid var(--color-divider)}
+.section h2{
+  font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;
+  margin-bottom:var(--space-5);color:var(--color-text);
+}
+.section h2 em{font-style:italic;color:var(--color-primary)}
+.section p{color:var(--color-text-muted);margin-bottom:var(--space-4)}
+.section p:last-child{margin-bottom:0}
+
+/* Freedom card */
+.freedom-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);
+  margin:var(--space-6) 0;
+}
+@media(max-width:520px){.freedom-grid{grid-template-columns:1fr}}
+.freedom-card{
+  background:var(--color-surface);border-radius:var(--radius-lg);
+  padding:var(--space-5);border:1px solid oklch(from var(--color-text) l c h/.07);
+}
+.freedom-card .icon{
+  width:36px;height:36px;border-radius:var(--radius-md);
+  background:var(--color-primary-highlight);display:flex;align-items:center;
+  justify-content:center;margin-bottom:var(--space-3);color:var(--color-primary);
+}
+.freedom-card h3{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-2)}
+.freedom-card p{font-size:var(--text-sm);color:var(--color-text-muted);max-width:none;margin:0}
+
+/* Highlight quote */
+.pullquote{
+  border-left:3px solid var(--color-primary);
+  padding:var(--space-4) var(--space-6);
+  margin:var(--space-6) 0;
+  background:var(--color-primary-highlight);
+  border-radius:0 var(--radius-md) var(--radius-md) 0;
+}
+.pullquote p{
+  font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;
+  color:var(--color-text);max-width:none;margin:0;
+}
+
+/* Phone animation */
+.phone-demo{
+  display:flex;gap:var(--space-8);align-items:center;
+  background:var(--color-surface);border-radius:var(--radius-xl);
+  padding:var(--space-6);border:1px solid oklch(from var(--color-text) l c h/.07);
+  margin:var(--space-6) 0;flex-wrap:wrap;
+}
+.phone-col{flex:1;min-width:200px}
+.phone-label{font-size:var(--text-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-faint);margin-bottom:var(--space-3)}
+.call-ui{
+  background:var(--color-bg);border-radius:var(--radius-lg);padding:var(--space-4);
+  border:1px solid var(--color-border);text-align:center;
+}
+.call-name{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;margin-bottom:var(--space-1)}
+.call-status{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-4)}
+.call-btns{display:flex;justify-content:center;gap:var(--space-4)}
+.call-btn{
+  width:52px;height:52px;border-radius:var(--radius-full);display:flex;
+  align-items:center;justify-content:center;border:none;cursor:pointer;
+}
+.call-btn.accept{background:#3a9e5c;color:#fff}
+.call-btn.decline{background:#c9394a;color:#fff}
+.call-btn svg{width:22px;height:22px}
+.phone-arrow{font-size:var(--text-2xl);color:var(--color-text-faint);align-self:center;flex-shrink:0}
+
+/* Verdict badge */
+.verdict{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  background:var(--color-primary);color:#fff;
+  padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);
+  font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-6);
+}
+
+/* Footer */
+footer{
+  padding:var(--space-8) 0;margin-top:var(--space-8);
+  border-top:1px solid var(--color-divider);
+  color:var(--color-text-faint);font-size:var(--text-xs);text-align:center;
+}
+footer a{color:var(--color-text-muted);text-decoration:none}
+footer a:hover{color:var(--color-text)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Yes Hello logo">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <circle cx="8.5" cy="10" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="10" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="15.5" cy="10" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      yeshello.chat
+    </a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+      A freedom-first manifesto
+    </div>
+    <h1>Do whatever <em>feels right</em> to you.</h1>
+    <p class="lead">There is no correct way to communicate — only one rule worth keeping: don't limit the freedom of the person on the other end.</p>
+  </section>
+
+  
+
+  <section class="section">
+    <h2>No rules. <em>One principle.</em></h2>
+    <p>
+      Etiquette guides are written with good intentions, but they have a problem: they turn preferences into prescriptions.
+      Someone's idea of "efficient communication" becomes a rulebook you're expected to follow — or else you're being rude, inconsiderate, or unprofessional.
+    </p>
+    <p>
+      Here's a different frame: <strong>etiquette is just a suggestion.</strong> Following it, ignoring it, adapting it —
+      all of that is your freedom. The only thing that isn't freely yours to do is make choices that
+      take options away from the person you're talking to.
+    </p>
+    <div class="pullquote">
+      <p>"Your freedom ends where it starts to limit mine. Until then — do your thing."</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Hello, or <em>straight to it</em> — both work</h2>
+    <p>
+      Want to start with a warm hello and some small talk before getting to the point? Great. 
+      Want to open with your question directly? Also great. Neither style is wrong.
+    </p>
+
+    <div class="chat-demo">
+    <div class="chat-demo-label">✨ Both of these are fine</div>
+    <div class="messages">
+      <div class="msg them">
+        <span class="msg-name">Alex</span>
+        <div class="bubble">Hey! Hope your day is going well 😊</div>
+        <span class="msg-time">12:32</span>
+      </div>
+      <div class="msg you">
+        <div class="bubble">Hey! Pretty good 🙂 what's up?</div>
+        <span class="msg-time">12:33</span>
+      </div>
+      <div class="msg them">
+        <div class="bubble">Quick one — do you know how to configure the deploy pipeline for staging?</div>
+        <span class="msg-time">12:33</span>
+      </div>
+    </div>
+    <div class="chat-divider">also fine</div>
+    <div class="messages">
+      <div class="msg them">
+        <span class="msg-name">Sam</span>
+        <div class="bubble">Hey — quick question about the deploy pipeline for staging, do you know the config?</div>
+        <span class="msg-time">12:32</span>
+      </div>
+      <div class="msg you">
+        <div class="bubble">Yes! Give me two mins.</div>
+        <span class="msg-time">12:34</span>
+      </div>
+    </div>
+  </div>
+    <p>
+      What matters is that the other person still gets to decide how and when to respond.
+      A "hello" doesn't trap anyone. A direct question doesn't either. You're just talking — let people answer in their own time and style.
+    </p>
+    <p>
+      The version of this philosophy that becomes a problem is when it turns into: <em>"you must not say hello"</em> or <em>"you must include your question upfront."</em>
+      As soon as communication style becomes a mandate, someone's freedom is being clipped.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>About <em>calling</em></h2>
+    <p>
+      Call whenever you feel like it. If I'm free and in the right headspace, I'll pick up.
+      If I'm not, I'll decline or let it ring. That's the whole system — it already works.
+    </p>
+
+    <div class="phone-demo">
+      <div class="phone-col">
+        <div class="phone-label">Incoming call</div>
+        <div class="call-ui">
+          <div class="call-name">Alex</div>
+          <div class="call-status">Calling…</div>
+          <div class="call-btns">
+            <button class="call-btn accept" aria-label="Accept call">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+            </button>
+            <button class="call-btn decline" aria-label="Decline call">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="transform:rotate(135deg)"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="phone-arrow">→</div>
+      <div class="phone-col">
+        <div class="phone-label">Both are completely fine</div>
+        <p style="font-size:var(--text-sm);color:var(--color-text-muted);max-width:none">
+          Accept: great, let's talk!<br><br>
+          Decline or ignore: no worries, neither of us owes the other instant availability.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      Neither calling out of the blue nor asking "do you have a minute?" first is more correct.
+      You have the freedom to reach out how you like. I have the freedom to answer or not.
+      As long as calling doesn't somehow <em>force</em> me to pick up, your freedom and mine coexist just fine.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Two freedoms. <em>Both respected.</em></h2>
+    <p>The whole thing really is this simple:</p>
+    <div class="freedom-grid">
+      <div class="freedom-card">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <h3>Your freedom to reach out</h3>
+        <p>Say hello, skip the hello, call, message, ping — however feels natural to you. There's no wrong style, only your style.</p>
+      </div>
+      <div class="freedom-card">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <h3>My freedom to respond</h3>
+        <p>I'll answer when I can, how I can. I might reply immediately, later, or not at all. That's not rudeness — that's autonomy.</p>
+      </div>
+    </div>
+    <p>
+      The only line worth drawing: don't communicate in a way that removes the other person's choices.
+      Pressuring someone to respond instantly, expecting them to always be available, or making them feel
+      obligated — that's where one person's freedom starts eating the other's.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="verdict">✓ The one rule</div>
+    <h2>Don't limit <em>their</em> freedom.</h2>
+    <p>
+      No etiquette guide has the authority to tell you how to talk to people. Not this one either.
+      Communicate however feels right — warm, direct, formal, casual, with a hello or without.
+    </p>
+    <p>
+      Just keep this one thing in mind: the person you're messaging is also free. Free to answer slowly,
+      free to decline your call, free to communicate differently than you do. As long as you both keep
+      that space open for each other, everything else is just style.
+    </p>
+  </section>
+
+</div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>A lighthearted response to <a href="https://sbmueller.github.io/nohello/" target="_blank" rel="noopener noreferrer">nohello.com</a> · Because humans need hellos too.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  if(t){
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');
+    t.addEventListener('click',()=>{
+      d=d==='dark'?'light':'dark';
+      r.setAttribute('data-theme',d);
+      t.innerHTML=d==='dark'
+        ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+        :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');
+    });
+  }
+})();
+</script>
+</body>
+</html>
